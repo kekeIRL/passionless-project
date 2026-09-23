@@ -13,7 +13,8 @@ function Manager:update(dt)
 	local event = self.message:pop()
 	while event do
 		if event.e == "player.dead" then
-			self.level.player:die()
+			self.level:restart()
+			break
 		end
 		event = self.message:pop()
 	end

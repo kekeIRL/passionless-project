@@ -1,0 +1,6 @@
+Player = require("./source/player")
+Block = require("./source/block")
+Level = require("./source/level")
+Spike = require("./source/spike")
+Physics = require("./source/physics-manager")
+Event = require("./source/event-manager")

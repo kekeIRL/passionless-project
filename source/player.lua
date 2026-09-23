@@ -1,20 +1,23 @@
 local Player = {}
 Player.__index = Player
 
-function Player.new(x, y, size)
+function Player.new(x, y, size, sprite)
 	local player = {
 		x = x or 0,
 		y = y or 0,
 		size = size or 2,
-
 		velocity = { x = 0, y = 0 },
+
 		jumps = 2,
 		accel = 2,
 		speed = 100,
 		vspeed = 300,
+
 		alive = true,
 		grounded = false,
 		lastframejump = false,
+
+		sprite = sprite,
 	}
 	return setmetatable(player, Player)
 end
@@ -66,9 +69,35 @@ function Player:update(dt)
 	self.y = self.y + dt * self.velocity.y
 end
 
-function Player:draw()
-	love.graphics.rectangle("fill", self.x, self.y, self.size, self.size)
-	love.graphics.print(self.jumps, 10, 10)
+function Player:draw(scale)
+	love.graphics.draw(self.sprite, self.x, self.y, 0)
+	--[[
+	local vertices = {
+		self.x,
+		self.y,
+		self.x + self.size,
+		self.y,
+		self.x + self.size,
+		self.y + self.size,
+		self.x,
+		self.y + self.size,
+	}
+	if self.velocity.x > 0 then
+		vertices[1] = vertices[1] + self.size / 2
+		vertices[3] = vertices[3] + self.size / 2
+	elseif self.velocity.x < 0 then
+		vertices[1] = vertices[1] - self.size / 2
+		vertices[3] = vertices[3] - self.size / 2
+	end
+
+	if scale then
+		for i, v in ipairs(vertices) do
+			vertices[i] = vertices[i] * scale
+		end
+	end
+
+	love.graphics.polygon("fill", vertices)
+  ]]
 end
 
 return Player
